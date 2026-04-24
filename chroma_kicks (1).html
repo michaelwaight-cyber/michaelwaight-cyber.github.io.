@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHROMA KICKS | Future of Footwear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'space': ['Space Grotesk', 'sans-serif'],
+                        'syne': ['Syne', 'sans-serif'],
+                    },
+                    colors: {
+                        'neon-pink': '#ff006e',
+                        'neon-cyan': '#00f5ff',
+                        'neon-lime': '#ccff00',
+                        'neon-purple': '#8338ec',
+                        'neon-orange': '#fb5607',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        'gradient-x': {
+                            '0%, 100%': { 'background-position': '0% 50%' },
+                            '50%': { 'background-position': '100% 50%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ff006e, #8338ec, #00f5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(#12121a, #12121a) padding-box,
+                        linear-gradient(135deg, #ff006e, #8338ec, #00f5ff) border-box;
+            border: 2px solid transparent;
+        }
+
+        .glass {
+            background: rgba(18, 18, 26, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(-45deg, #ff006e, #8338ec, #00f5ff, #fb5607, #ccff00);
+            background-size: 400% 400%;
+            animation: gradient-x 15s ease infinite;
+        }
+
+        .sneaker-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .sneaker-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(131, 56, 236, 0.3);
+        }
+
+        .sneaker-card:hover .sneaker-img {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .sneaker-img {
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff006e, #00f5ff);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .cart-sidebar {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cart-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #ff006e, #8338ec);
+            color: white;
+            border-color: transparent;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .toast {
+            transform: translateX(150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .quantity-btn {
+            transition: all 0.2s;
+        }
+
+        .quantity-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .heart-btn.liked {
+            color: #ff006e;
+            animation: pulse 0.3s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .perspective-container {
+            perspective: 1000px;
+        }
+
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+        }
+
+        .size-btn.selected {
+            background: linear-gradient(135deg, #00f5ff, #8338ec);
+            color: #0a0a0f;
+            font-weight: bold;
+        }
+
+        .checkout-input:focus {
+            outline: none;
+            border-color: #00f5ff;
+            box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-dark-bg min-h-screen">
+    <!-- Background Blobs -->
+    <div class="blob bg-neon-pink w-96 h-96 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="blob bg-neon-purple w-80 h-80 rounded-full bottom-0 right-0 translate-x-1/3 translate-y-1/3 animation-delay-2000"></div>
+    <div class="blob bg-neon-cyan w-64 h-64 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animation-delay-4000"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="router.navigate('home')">
+                    <div class="w-10 h-10 rounded-xl hero-gradient flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-lg"></i>
+                    </div>
+                    <span class="font-syne font-bold text-2xl tracking-tight">CHROMA<span class="gradient-text">KICKS</span></span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <button onclick="router.navigate('home')" class="nav-link text-sm font-medium tracking-wide hover:text-neon-cyan transition-colors" data-page="home">HOME</button>
+                    <button onclick="router.navigate('street')" class="nav-link text-sm font-medium tracking-wide hover:text-neon-cyan transition-colors" data-page="street">STREET LAB</button>
+                    <button onclick="router.navigate('premium')" class="nav-link text-sm font-medium tracking-wide hover:text-neon-cyan transition-colors" data-page="premium">PREMIUM</button>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button class="relative p-2 hover:bg-white/5 rounded-full transition-colors" onclick="toggleSearch()">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                    <button class="relative p-2 hover:bg-white/5 rounded-full transition-colors" onclick="toggleCart()">
+                        <i class="fas fa-shopping-bag text-lg"></i>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-neon-pink rounded-full text-xs flex items-center justify-center font-bold hidden">0</span>
+                    </button>
+                    <button class="md:hidden p-2 hover:bg-white/5 rounded-full transition-colors" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden glass border-t border-white/5">
+            <div class="px-4 py-4 space-y-3">
+                <button onclick="router.navigate('home'); toggleMobileMenu()" class="block w-full text-left py-2 px-4 rounded-lg hover:bg-white/5 transition-colors">HOME</button>
+                <button onclick="router.navigate('street'); toggleMobileMenu()" class="block w-full text-left py-2 px-4 rounded-lg hover:bg-white/5 transition-colors">STREET LAB</button>
+                <button onclick="router.navigate('premium'); toggleMobileMenu()" class="block w-full text-left py-2 px-4 rounded-lg hover:bg-white/5 transition-colors">PREMIUM</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 z-50 bg-dark-bg/95 backdrop-blur-xl hidden flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl">
+            <div class="relative">
+                <input type="text" id="search-input" placeholder="Search for sneakers..." 
+                    class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 pl-14 text-xl text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan transition-colors"
+                    oninput="handleSearch(this.value)">
+                <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 text-xl"></i>
+                <button onclick="toggleSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="search-results" class="mt-6 max-h-96 overflow-y-auto scrollbar-hide"></div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-overlay" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden" onclick="toggleCart()"></div>
+    <div id="cart-sidebar" class="cart-sidebar fixed top-0 right-0 h-full w-full max-w-md z-50 bg-card-bg border-l border-white/10 flex flex-col">
+        <div class="p-6 border-b border-white/10 flex justify-between items-center">
+            <h2 class="font-syne font-bold text-2xl">YOUR CART</h2>
+            <button onclick="toggleCart()" class="p-2 hover:bg-white/5 rounded-full transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-hide">
+            <div class="text-center text-gray-500 py-12">
+                <i class="fas fa-shopping-bag text-6xl mb-4 opacity-20"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="p-6 border-t border-white/10 space-y-4">
+            <div class="flex justify-between text-lg">
+                <span class="text-gray-400">Subtotal</span>
+                <span id="cart-subtotal" class="font-bold">$0.00</span>
+            </div>
+            <div class="flex justify-between text-lg">
+                <span class="text-gray-400">Shipping</span>
+                <span class="text-neon-lime">FREE</span>
+            </div>
+            <div class="flex justify-between text-2xl font-bold pt-2 border-t border-white/10">
+                <span>TOTAL</span>
+                <span id="cart-total" class="gradient-text">$0.00</span>
+            </div>
+            <button onclick="openCheckout()" class="w-full py-4 rounded-xl hero-gradient font-bold text-lg tracking-wide hover:opacity-90 transition-opacity">
+                CHECKOUT
+            </button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-card-bg border border-white/10 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto scrollbar-hide">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                <h2 class="font-syne font-bold text-2xl gradient-text">CHECKOUT</h2>
+                <button onclick="closeCheckout()" class="p-2 hover:bg-white/5 rounded-full transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">First Name</label>
+                        <input type="text" class="checkout-input w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Last Name</label>
+                        <input type="text" class="checkout-input w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white transition-all">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Email</label>
+                    <input type="email" class="checkout-input w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Address</label>
+                    <input type="text" class="checkout-input w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white transition-all">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">City</label>
+                        <input type="text" class="checkout-input w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">ZIP</label>
+                        <input type="text" class="checkout-input w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white transition-all">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Card Number</label>
+                    <div class="relative">
+                        <input type="text" placeholder="0000 0000 0000 0000" class="checkout-input w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 pl-12 text-white transition-all">
+                        <i class="fab fa-cc-visa absolute left-4 top-1/2 -translate-y-1/2 text-2xl text-gray-500"></i>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Expiry</label>
+                        <input type="text" placeholder="MM/YY" class="checkout-input w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">CVC</label>
+                        <input type="text" placeholder="123" class="checkout-input w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white transition-all">
+                    </div>
+                </div>
+                <button onclick="processCheckout()" class="w-full py-4 rounded-xl hero-gradient font-bold text-lg tracking-wide hover:opacity-90 transition-opacity mt-4">
+                    PAY <span id="checkout-total">$0.00</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3"></div>
+
+    <!-- PAGE 1: HOME / OPENING -->
+    <div id="page-home" class="page active pt-20">
+        <!-- Hero Section -->
+        <section class="relative min-h-screen flex items-center justify-center overflow-hidden px-4">
+            <div class="absolute inset-0 hero-gradient opacity-10"></div>
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.03"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-neon-cyan/30 text-neon-cyan text-sm font-medium">
+                        <span class="w-2 h-2 rounded-full bg-neon-cyan animate-pulse"></span>
+                        NEW DROP AVAILABLE
+                    </div>
+                    <h1 class="font-syne font-bold text-5xl sm:text-7xl lg:text-8xl leading-none">
+                        STEP INTO<br>
+                        <span class="gradient-text">THE FUTURE</span>
+                    </h1>
+                    <p class="text-gray-400 text-lg sm:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        Discover the most exclusive sneakers curated from around the globe. Limited editions, bold colors, unmatched comfort.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <button onclick="router.navigate('street')" class="group px-8 py-4 rounded-xl hero-gradient font-bold text-lg tracking-wide hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                            SHOP NOW
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                        <button onclick="scrollToFeatured()" class="px-8 py-4 rounded-xl glass border border-white/20 font-bold text-lg tracking-wide hover:bg-white/5 transition-colors">
+                            VIEW DROP
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-center lg:justify-start gap-8 pt-4">
+                        <div>
+                            <div class="font-syne font-bold text-3xl gradient-text">50K+</div>
+                            <div class="text-sm text-gray-500">Happy Customers</div>
+                        </div>
+                        <div class="w-px h-12 bg-white/10"></div>
+                        <div>
+                            <div class="font-syne font-bold text-3xl gradient-text">200+</div>
+                            <div class="text-sm text-gray-500">Exclusive Drops</div>
+                        </div>
+                        <div class="w-px h-12 bg-white/10"></div>
+                        <div>
+                            <div class="font-syne font-bold text-3xl gradient-text">24H</div>
+                            <div class="text-sm text-gray-500">Fast Shipping</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative perspective-container">
+                    <div class="tilt-card relative" id="hero-sneaker">
+                        <div class="absolute inset-0 hero-gradient rounded-3xl blur-3xl opacity-30"></div>
+                        <div class="relative glass rounded-3xl p-8 border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800&q=80" 
+                                alt="Featured Sneaker" 
+                                class="w-full h-auto rounded-2xl object-cover aspect-square">
+                            <div class="absolute top-4 right-4 px-4 py-2 rounded-full bg-neon-pink text-white text-sm font-bold">
+                                -30%
+                            </div>
+                            <div class="mt-6 flex justify-between items-end">
+                                <div>
+                                    <h3 class="font-syne font-bold text-2xl">AIR MAX PULSE</h3>
+                                    <p class="text-gray-400">Neon Edition</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-gray-500 line-through text-sm">$280</div>
+                                    <div class="font-bold text-2xl text-neon-lime">$196</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Elements -->
+                    <div class="absolute -top-8 -right-8 w-24 h-24 rounded-2xl glass border border-neon-cyan/30 flex items-center justify-center animate-float">
+                        <i class="fas fa-fire text-neon-cyan text-3xl"></i>
+                    </div>
+                    <div class="absolute -bottom-4 -left-8 w-20 h-20 rounded-full glass border border-neon-pink/30 flex items-center justify-center animate-float" style="animation-delay: 2s;">
+                        <i class="fas fa-bolt text-neon-pink text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Marquee -->
+        <div class="py-8 overflow-hidden border-y border-white/5 bg-white/5">
+            <div class="flex whitespace-nowrap animate-marquee">
+                <span class="text-4xl font-syne font-bold mx-8 text-white/10">NIKE</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-neon-pink">ADIDAS</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-white/10">JORDAN</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-neon-cyan">YEEZY</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-white/10">NEW BALANCE</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-neon-lime">PUMA</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-white/10">CONVERSE</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-neon-purple">VANS</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-white/10">NIKE</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-neon-pink">ADIDAS</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-white/10">JORDAN</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-neon-cyan">YEEZY</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-white/10">NEW BALANCE</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-neon-lime">PUMA</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-white/10">CONVERSE</span>
+                <span class="text-4xl font-syne font-bold mx-8 text-neon-purple">VANS</span>
+            </div>
+        </div>
+
+        <!-- Featured Drop -->
+        <section id="featured-section" class="py-24 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                    <div>
+                        <h2 class="font-syne font-bold text-4xl sm:text-5xl mb-4">FEATURED <span class="gradient-text">DROP</span></h2>
+                        <p class="text-gray-400 max-w-md">Handpicked selections from this week's most anticipated releases.</p>
+                    </div>
+                    <button onclick="router.navigate('street')" class="group flex items-center gap-2 text-neon-cyan hover:text-white transition-colors font-medium">
+                        VIEW ALL
+                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6" id="featured-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="py-24 px-4 relative">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="font-syne font-bold text-4xl sm:text-5xl text-center mb-16">EXPLORE <span class="gradient-text">COLLECTIONS</span></h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="group relative overflow-hidden rounded-3xl cursor-pointer h-96" onclick="router.navigate('street')">
+                        <img src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=800&q=80" 
+                            alt="Street Collection" 
+                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-8">
+                            <h3 class="font-syne font-bold text-3xl mb-2">STREET LAB</h3>
+                            <p class="text-gray-300 mb-4">Urban culture meets bold design</p>
+                            <span class="inline-flex items-center gap-2 text-neon-cyan font-medium">
+                                EXPLORE <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-3xl cursor-pointer h-96" onclick="router.navigate('premium')">
+                        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&q=80" 
+                            alt="Premium Collection" 
+                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-8">
+                            <h3 class="font-syne font-bold text-3xl mb-2">PREMIUM</h3>
+                            <p class="text-gray-300 mb-4">Luxury craftsmanship redefined</p>
+                            <span class="inline-flex items-center gap-2 text-neon-lime font-medium">
+                                EXPLORE <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="py-24 px-4">
+            <div class="max-w-4xl mx-auto glass rounded-3xl p-8 sm:p-16 text-center border border-white/10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-neon-pink/20 rounded-full blur-3xl"></div>
+                <div class="relative z-10">
+                    <h2 class="font-syne font-bold text-3xl sm:text-5xl mb-6">JOIN THE <span class="gradient-text">MOVEMENT</span></h2>
+                    <p class="text-gray-400 mb-8 max-w-lg mx-auto">Get exclusive access to drops, restocks, and member-only discounts. No spam, just heat.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                        <input type="email" placeholder="Enter your email" class="flex-1 bg-white/5 border border-white/10 rounded-xl py-4 px-6 text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan transition-colors">
+                        <button onclick="showToast('Welcome to the club! 🔥', 'success')" class="px-8 py-4 rounded-xl hero-gradient font-bold tracking-wide hover:opacity-90 transition-opacity whitespace-nowrap">
+                            SUBSCRIBE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE 2: STREET LAB -->
+    <div id="page-street" class="page pt-20">
+        <div class="relative py-16 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12">
+                    <h1 class="font-syne font-bold text-5xl sm:text-6xl mb-4">STREET <span class="gradient-text">LAB</span></h1>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">Raw energy. Bold colors. The streets are calling. Find your perfect pair from our curated streetwear selection.</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12">
+                    <button class="filter-btn active px-6 py-2 rounded-full border border-white/20 text-sm font-medium transition-all" onclick="filterProducts('all', 'street')">ALL</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm font-medium transition-all hover:border-neon-cyan" onclick="filterProducts('nike', 'street')">NIKE</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm font-medium transition-all hover:border-neon-cyan" onclick="filterProducts('adidas', 'street')">ADIDAS</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm font-medium transition-all hover:border-neon-cyan" onclick="filterProducts('jordan', 'street')">JORDAN</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm font-medium transition-all hover:border-neon-cyan" onclick="filterProducts('newbalance', 'street')">NEW BALANCE</button>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="street-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: PREMIUM -->
+    <div id="page-premium" class="page pt-20">
+        <div class="relative py-16 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-neon-lime/30 text-neon-lime text-sm font-medium mb-6">
+                        <i class="fas fa-gem"></i>
+                        EXCLUSIVE COLLECTION
+                    </div>
+                    <h1 class="font-syne font-bold text-5xl sm:text-6xl mb-4">PREMIUM <span class="gradient-text">SELECTION</span></h1>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">Elevated materials, limited quantities, timeless design. For those who demand the extraordinary.</p>
+                </div>
+
+                <!-- Premium Filters -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12">
+                    <button class="filter-btn active px-6 py-2 rounded-full border border-white/20 text-sm font-medium transition-all" onclick="filterProducts('all', 'premium')">ALL</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm font-medium transition-all hover:border-neon-lime" onclick="filterProducts('luxury', 'premium')">LUXURY</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm font-medium transition-all hover:border-neon-lime" onclick="filterProducts('collab', 'premium')">COLLABS</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-white/20 text-sm font-medium transition-all hover:border-neon-lime" onclick="filterProducts('limited', 'premium')">LIMITED</button>
+                </div>
+
+                <!-- Premium Product Grid - Bento Style -->
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[400px]" id="premium-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Quick View Modal -->
+    <div id="quick-view-modal" class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-card-bg border border-white/10 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto scrollbar-hide">
+            <div id="quick-view-content" class="grid md:grid-cols-2">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/20 mt-20">
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-lg hero-gradient flex items-center justify-center">
+                            <i class="fas fa-bolt text-white text-sm"></i>
+                        </div>
+                        <span class="font-syne font-bold text-xl">CHROMA<span class="gradient-text">KICKS</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">The future of footwear is here. Authentic, exclusive, and always ahead of the curve.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full glass border border-white/10 flex items-center justify-center hover:border-neon-cyan transition-colors">
+                            <i class="fab fa-instagram text-gray-400 hover:text-neon-cyan"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full glass border border-white/10 flex items-center justify-center hover:border-neon-pink transition-colors">
+                            <i class="fab fa-twitter text-gray-400 hover:text-neon-pink"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full glass border border-white/10 flex items-center justify-center hover:border-neon-lime transition-colors">
+                            <i class="fab fa-tiktok text-gray-400 hover:text-neon-lime"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">SHOP</h4>
+                    <ul class="space-y-3 text-gray-500 text-sm">
+                        <li><button onclick="router.navigate('street')" class="hover:text-neon-cyan transition-colors">Street Lab</button></li>
+                        <li><button onclick="router.navigate('premium')" class="hover:text-neon-cyan transition-colors">Premium</button></li>
+                        <li><button onclick="showToast('Coming soon!', 'info')" class="hover:text-neon-cyan transition-colors">New Arrivals</button></li>
+                        <li><button onclick="showToast('Coming soon!', 'info')" class="hover:text-neon-cyan transition-colors">Best Sellers</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">SUPPORT</h4>
+                    <ul class="space-y-3 text-gray-500 text-sm">
+                        <li><button onclick="showToast('Coming soon!', 'info')" class="hover:text-neon-cyan transition-colors">Size Guide</button></li>
+                        <li><button onclick="showToast('Coming soon!', 'info')" class="hover:text-neon-cyan transition-colors">Shipping Info</button></li>
+                        <li><button onclick="showToast('Coming soon!', 'info')" class="hover:text-neon-cyan transition-colors">Returns</button></li>
+                        <li><button onclick="showToast('Coming soon!', 'info')" class="hover:text-neon-cyan transition-colors">Contact Us</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">CONTACT</h4>
+                    <ul class="space-y-3 text-gray-500 text-sm">
+                        <li class="flex items-center gap-2"><i class="fas fa-envelope text-neon-cyan"></i> hello@chromakicks.com</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-phone text-neon-pink"></i> +1 (555) 234-5678</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-neon-lime"></i> Los Angeles, CA</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-600 text-sm"> 2024 Chroma Kicks. All rights reserved.</p>
+                <div class="flex gap-6 text-gray-600 text-sm">
+                    <button onclick="showToast('Coming soon!', 'info')" class="hover:text-white transition-colors">Privacy Policy</button>
+                    <button onclick="showToast('Coming soon!', 'info')" class="hover:text-white transition-colors">Terms of Service</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Product Data
+        const products = [
+            // Street Lab Products - NIKE
+            { id: 1, name: "Air Force 1 '07", brand: "nike", category: "street", price: 110, image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&q=80", colors: ["white", "black"], sizes: [7, 8, 9, 10, 11], badge: "BESTSELLER" },
+            { id: 2, name: "Dunk Low Retro", brand: "nike", category: "street", price: 120, image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80", colors: ["red", "white"], sizes: [6, 7, 8, 9, 10, 11, 12], badge: "HOT" },
+            { id: 3, name: "Air Max 90", brand: "nike", category: "street", price: 130, image: "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=600&q=80", colors: ["grey", "black"], sizes: [7, 8, 9, 10, 11, 12], badge: "CLASSIC" },
+            { id: 4, name: "Blazer Mid '77", brand: "nike", category: "street", price: 105, image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80", colors: ["white", "orange"], sizes: [7, 8, 9, 10, 11], badge: null },
+            { id: 5, name: "Air Max Plus", brand: "nike", category: "street", price: 175, image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=600&q=80", colors: ["black", "blue"], sizes: [8, 9, 10, 11, 12], badge: "TRENDING" },
+
+            // Street Lab Products - ADIDAS
+            { id: 6, name: "Samba OG", brand: "adidas", category: "street", price: 100, image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600&q=80", colors: ["black", "white"], sizes: [7, 8, 9, 10, 11], badge: null },
+            { id: 7, name: "Campus 00s", brand: "adidas", category: "street", price: 110, image: "https://images.unsplash.com/photo-1584735175315-9d5df23860e6?w=600&q=80", colors: ["blue", "white"], sizes: [7, 8, 9, 10, 11, 12], badge: "NEW" },
+            { id: 8, name: "Gazelle Indoor", brand: "adidas", category: "street", price: 120, image: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&q=80", colors: ["red", "white"], sizes: [7, 8, 9, 10, 11], badge: "HOT" },
+            { id: 9, name: "Handball Spezial", brand: "adidas", category: "street", price: 110, image: "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=600&q=80", colors: ["navy", "white"], sizes: [7, 8, 9, 10, 11, 12], badge: null },
+            { id: 10, name: "Forum Low CL", brand: "adidas", category: "street", price: 100, image: "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=600&q=80", colors: ["white", "green"], sizes: [7, 8, 9, 10], badge: "FRESH" },
+
+            // Street Lab Products - JORDAN
+            { id: 11, name: "Air Jordan 1 Mid", brand: "jordan", category: "street", price: 135, image: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600&q=80", colors: ["red", "black", "white"], sizes: [8, 9, 10, 11, 12], badge: "CLASSIC" },
+            { id: 12, name: "Jordan 4 Retro", brand: "jordan", category: "street", price: 210, image: "https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?w=600&q=80", colors: ["white", "grey"], sizes: [8, 9, 10, 11], badge: null },
+            { id: 13, name: "Jordan 1 Low", brand: "jordan", category: "street", price: 115, image: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=600&q=80", colors: ["black", "red"], sizes: [8, 9, 10, 11, 12], badge: "BESTSELLER" },
+            { id: 14, name: "Jordan 3 Retro", brand: "jordan", category: "street", price: 200, image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600&q=80", colors: ["white", "cement"], sizes: [8, 9, 10, 11], badge: "ICON" },
+            { id: 15, name: "Jordan 11 CMFT Low", brand: "jordan", category: "street", price: 130, image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&q=80", colors: ["black", "white"], sizes: [8, 9, 10, 11, 12], badge: null },
+
+            // Street Lab Products - NEW BALANCE
+            { id: 16, name: "550", brand: "newbalance", category: "street", price: 130, image: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&q=80", colors: ["white", "green"], sizes: [7, 8, 9, 10, 11], badge: "TRENDING" },
+            { id: 17, name: "9060", brand: "newbalance", category: "street", price: 160, image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80", colors: ["grey", "black"], sizes: [8, 9, 10, 11, 12], badge: null },
+            { id: 18, name: "574 Legacy", brand: "newbalance", category: "street", price: 100, image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600&q=80", colors: ["navy", "white"], sizes: [7, 8, 9, 10, 11], badge: "HERITAGE" },
+            { id: 19, name: "2002R", brand: "newbalance", category: "street", price: 140, image: "https://images.unsplash.com/photo-1584735175315-9d5df23860e6?w=600&q=80", colors: ["grey", "black"], sizes: [7, 8, 9, 10, 11, 12], badge: "COMFORT" },
+            { id: 20, name: "530", brand: "newbalance", category: "street", price: 110, image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80", colors: ["white", "silver"], sizes: [7, 8, 9, 10, 11], badge: "Y2K" },
+
+            // Premium Products - NIKE
+            { id: 21, name: "Off-White Dunk Low", brand: "nike", category: "premium", price: 1200, image: "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=600&q=80", colors: ["yellow", "white"], sizes: [8, 9, 10, 11], badge: "VIRGIL", subcategory: "collab" },
+            { id: 22, name: "Nike SB Dunk Low Concepts", brand: "nike", category: "premium", price: 450, image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&q=80", colors: ["green", "orange"], sizes: [8, 9, 10], badge: "LOBSTER", subcategory: "limited" },
+            { id: 23, name: "Sacai VaporWaffle", brand: "nike", category: "premium", price: 180, image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80", colors: ["black", "white"], sizes: [8, 9, 10, 11], badge: "SACAI", subcategory: "collab" },
+            { id: 24, name: "Air Jordan 1 High 85", brand: "nike", category: "premium", price: 250, image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=600&q=80", colors: ["red", "white"], sizes: [8, 9, 10, 11], badge: "OG", subcategory: "limited" },
+            { id: 25, name: "Kobe 6 Protro", brand: "nike", category: "premium", price: 190, image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600&q=80", colors: ["purple", "gold"], sizes: [8, 9, 10, 11, 12], badge: "MAMBA", subcategory: "luxury" },
+
+            // Premium Products - ADIDAS
+            { id: 26, name: "Yeezy Boost 350 V2", brand: "adidas", category: "premium", price: 230, image: "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=600&q=80", colors: ["beige", "grey"], sizes: [7, 8, 9, 10, 11, 12], badge: "RARE", subcategory: "collab" },
+            { id: 27, name: "Adidas Humanrace NMD", brand: "adidas", category: "premium", price: 220, image: "https://images.unsplash.com/photo-1584735175315-9d5df23860e6?w=600&q=80", colors: ["pink", "yellow"], sizes: [7, 8, 9, 10, 11], badge: "PHARRELL", subcategory: "collab" },
+            { id: 28, name: "Yeezy Boost 700", brand: "adidas", category: "premium", price: 300, image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600&q=80", colors: ["grey", "orange"], sizes: [7, 8, 9, 10, 11], badge: "WAVE", subcategory: "collab" },
+            { id: 29, name: "Adidas x Wales Bonner", brand: "adidas", category: "premium", price: 160, image: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&q=80", colors: ["brown", "cream"], sizes: [7, 8, 9, 10, 11], badge: "LUXE", subcategory: "luxury" },
+            { id: 30, name: "Adidas x Fear of God", brand: "adidas", category: "premium", price: 280, image: "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=600&q=80", colors: ["black", "grey"], sizes: [7, 8, 9, 10, 11, 12], badge: "FOG", subcategory: "collab" },
+
+            // Premium Products - JORDAN
+            { id: 31, name: "Travis Scott x Jordan 1", brand: "jordan", category: "premium", price: 1500, image: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600&q=80", colors: ["brown", "white"], sizes: [8, 9, 10], badge: "GRAIL", subcategory: "collab" },
+            { id: 32, name: "Air Jordan 4 A Ma Maniere", brand: "jordan", category: "premium", price: 225, image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80", colors: ["purple", "grey"], sizes: [8, 9, 10, 11], badge: "COLLAB", subcategory: "collab" },
+            { id: 33, name: "Jordan 1 High Dior", brand: "jordan", category: "premium", price: 8000, image: "https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?w=600&q=80", colors: ["grey", "white"], sizes: [8, 9, 10], badge: "DIOR", subcategory: "luxury" },
+            { id: 34, name: "Jordan 1 Trophy Room", brand: "jordan", category: "premium", price: 400, image: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=600&q=80", colors: ["blue", "white"], sizes: [8, 9, 10, 11], badge: "FROZEN", subcategory: "limited" },
+            { id: 35, name: "Jordan 4 SB Pine Green", brand: "jordan", category: "premium", price: 300, image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600&q=80", colors: ["green", "white"], sizes: [8, 9, 10, 11, 12], badge: "SKATE", subcategory: "collab" },
+
+            // Premium Products - NEW BALANCE
+            { id: 36, name: "New Balance 990v6", brand: "newbalance", category: "premium", price: 200, image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600&q=80", colors: ["grey"], sizes: [7, 8, 9, 10, 11, 12], badge: "MADE IN USA", subcategory: "luxury" },
+            { id: 37, name: "New Balance x JJJJound", brand: "newbalance", category: "premium", price: 250, image: "https://images.unsplash.com/photo-1584735175315-9d5df23860e6?w=600&q=80", colors: ["olive", "black"], sizes: [7, 8, 9, 10, 11], badge: "JJJJOUND", subcategory: "collab" },
+            { id: 38, name: "New Balance 998 MiUSA", brand: "newbalance", category: "premium", price: 220, image: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&q=80", colors: ["navy", "grey"], sizes: [7, 8, 9, 10, 11], badge: "HERITAGE", subcategory: "luxury" },
+            { id: 39, name: "New Balance x Stone Island", brand: "newbalance", category: "premium", price: 350, image: "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=600&q=80", colors: ["green", "black"], sizes: [8, 9, 10, 11], badge: "SI", subcategory: "collab" },
+            { id: 40, name: "New Balance 1906R", brand: "newbalance", category: "premium", price: 160, image: "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=600&q=80", colors: ["silver", "black"], sizes: [7, 8, 9, 10, 11, 12], badge: "RUNNER", subcategory: "luxury" },
+        ];
+
+        // State
+        let cart = [];
+        let wishlist = new Set();
+        let currentFilter = { street: 'all', premium: 'all' };
+
+        // Router
+        const router = {
+            current: 'home',
+            navigate(page) {
+                document.querySelectorAll('.page').forEach(p => {
+                    p.classList.remove('active');
+                    setTimeout(() => {
+                        if (!p.classList.contains('active')) p.style.display = 'none';
+                    }, 500);
+                });
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+                const target = document.getElementById(`page-${page}`);
+                target.style.display = 'block';
+                setTimeout(() => target.classList.add('active'), 10);
+
+                document.querySelector(`[data-page="${page}"]`)?.classList.add('active');
+                this.current = page;
+                window.scrollTo(0, 0);
+
+                if (page === 'street') renderStreet();
+                if (page === 'premium') renderPremium();
+            }
+        };
+
+        // Render Functions
+        function renderFeatured() {
+            const featured = [products[0], products[11], products[25]];
+            const grid = document.getElementById('featured-grid');
+            grid.innerHTML = featured.map(p => createProductCard(p, true)).join('');
+        }
+
+        function renderStreet() {
+            const filtered = currentFilter.street === 'all' 
+                ? products.filter(p => p.category === 'street')
+                : products.filter(p => p.category === 'street' && p.brand === currentFilter.street);
+            document.getElementById('street-grid').innerHTML = filtered.map(p => createProductCard(p)).join('');
+        }
+
+        function renderPremium() {
+            const filtered = currentFilter.premium === 'all'
+                ? products.filter(p => p.category === 'premium')
+                : products.filter(p => p.category === 'premium' && p.subcategory === currentFilter.premium);
+
+            const grid = document.getElementById('premium-grid');
+            grid.innerHTML = filtered.map((p, i) => {
+                const span = i === 0 || i === 3 ? 'md:col-span-2' : '';
+                return createProductCard(p, false, span);
+            }).join('');
+        }
+
+        function createProductCard(product, isFeatured = false, spanClass = '') {
+            const isWishlisted = wishlist.has(product.id);
+            const badgeColors = {
+                'HOT': 'bg-neon-orange',
+                'NEW': 'bg-neon-cyan',
+                'BESTSELLER': 'bg-neon-purple',
+                'TRENDING': 'bg-neon-pink',
+                'LIMITED': 'bg-neon-lime text-black',
+                'RARE': 'bg-neon-orange',
+                'GRAIL': 'bg-neon-pink',
+                'VIRGIL': 'bg-white text-black',
+                'COLLAB': 'bg-neon-purple',
+                'LOBSTER': 'bg-neon-orange',
+                'PHARRELL': 'bg-neon-cyan',
+                'MADE IN USA': 'bg-neon-lime text-black',
+                'CLASSIC': 'bg-neon-cyan'
+            };
+
+            return `
+                <div class="sneaker-card ${spanClass} group relative glass rounded-2xl overflow-hidden border border-white/5 ${isFeatured ? '' : ''}">
+                    ${product.badge ? `
+                        <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full ${badgeColors[product.badge] || 'bg-neon-cyan'} text-xs font-bold">
+                            ${product.badge}
+                        </div>
+                    ` : ''}
+                    <button onclick="toggleWishlist(${product.id})" class="heart-btn absolute top-4 right-4 z-10 w-10 h-10 rounded-full glass border border-white/10 flex items-center justify-center transition-all hover:scale-110 ${isWishlisted ? 'liked' : 'text-gray-400'}">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <div class="relative overflow-hidden aspect-square cursor-pointer" onclick="openQuickView(${product.id})">
+                        <img src="${product.image}" alt="${product.name}" class="sneaker-img w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-6 py-3 rounded-full glass border border-white/20 text-sm font-bold tracking-wide">QUICK VIEW</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">${product.brand}</p>
+                                <h3 class="font-syne font-bold text-lg leading-tight">${product.name}</h3>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-bold text-xl text-neon-lime">$${product.price}</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-3 mb-4">
+                            ${product.colors.map(c => `
+                                <div class="w-5 h-5 rounded-full border border-white/20" style="background-color: ${c};"></div>
+                            `).join('')}
+                        </div>
+                        <button onclick="addToCart(${product.id})" class="w-full py-3 rounded-xl bg-white/5 border border-white/10 font-medium text-sm tracking-wide hover:bg-white/10 transition-all flex items-center justify-center gap-2 group-hover:border-neon-cyan/50">
+                            <i class="fas fa-plus"></i> ADD TO CART
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Cart Functions
+        function addToCart(productId, size = null) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId && item.size === (size || item.size));
+
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1, size: size || product.sizes[2] });
+            }
+
+            updateCart();
+            showToast(`${product.name} added to cart!`, 'success');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity <= 0) {
+                removeFromCart(index);
+            } else {
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            const container = document.getElementById('cart-items');
+            const badge = document.getElementById('cart-badge');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-500 py-12">
+                        <i class="fas fa-shopping-bag text-6xl mb-4 opacity-20"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map((item, i) => `
+                    <div class="flex gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
+                        <img src="${item.image}" class="w-20 h-20 rounded-lg object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm">${item.name}</h4>
+                            <p class="text-gray-500 text-xs mb-2">Size: ${item.size}</p>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <button onclick="updateQuantity(${i}, -1)" class="quantity-btn w-6 h-6 rounded-full glass border border-white/10 flex items-center justify-center text-xs">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <span class="text-sm font-medium">${item.quantity}</span>
+                                    <button onclick="updateQuantity(${i}, 1)" class="quantity-btn w-6 h-6 rounded-full glass border border-white/10 flex items-center justify-center text-xs">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="font-bold text-neon-lime">$${item.price * item.quantity}</span>
+                                    <button onclick="removeFromCart(${i})" class="text-gray-500 hover:text-neon-pink transition-colors">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cart-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cart-total').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('checkout-total').textContent = `$${subtotal.toFixed(2)}`;
+        }
+
+        // Wishlist
+        function toggleWishlist(productId) {
+            if (wishlist.has(productId)) {
+                wishlist.delete(productId);
+                showToast('Removed from wishlist', 'info');
+            } else {
+                wishlist.add(productId);
+                showToast('Added to wishlist! ❤️', 'success');
+            }
+            renderStreet();
+            renderPremium();
+            renderFeatured();
+        }
+
+        // Filter
+        function filterProducts(filter, page) {
+            currentFilter[page] = filter;
+            document.querySelectorAll(`#page-${page} .filter-btn`).forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().replace(/\s/g, '') === filter || (filter === 'all' && btn.textContent === 'ALL')) {
+                    btn.classList.add('active');
+                }
+            });
+            if (page === 'street') renderStreet();
+            if (page === 'premium') renderPremium();
+        }
+
+        // Quick View
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            const modal = document.getElementById('quick-view-modal');
+            const content = document.getElementById('quick-view-content');
+
+            content.innerHTML = `
+                <div class="relative">
+                    <img src="${product.image}" class="w-full h-full object-cover min-h-[400px]">
+                    <button onclick="closeQuickView()" class="absolute top-4 right-4 w-10 h-10 rounded-full glass border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-8 flex flex-col justify-center">
+                    <p class="text-neon-cyan text-sm font-medium tracking-wider mb-2">${product.brand.toUpperCase()}</p>
+                    <h2 class="font-syne font-bold text-3xl mb-4">${product.name}</h2>
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="text-3xl font-bold text-neon-lime">$${product.price}</span>
+                        ${product.badge ? `<span class="px-3 py-1 rounded-full bg-neon-pink text-xs font-bold">${product.badge}</span>` : ''}
+                    </div>
+                    <p class="text-gray-400 mb-6 leading-relaxed">Experience ultimate comfort and style with the ${product.name}. Featuring premium materials, responsive cushioning, and a design that turns heads on every corner.</p>
+
+                    <div class="mb-6">
+                        <label class="block text-sm text-gray-400 mb-3">SELECT SIZE</label>
+                        <div class="flex flex-wrap gap-2" id="qv-sizes">
+                            ${product.sizes.map((s, i) => `
+                                <button onclick="selectSize(this, ${s})" class="size-btn w-12 h-12 rounded-xl glass border border-white/10 font-medium text-sm hover:border-neon-cyan transition-all ${i === 2 ? 'selected' : ''}">${s}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button onclick="addToCart(${product.id}, getSelectedSize())" class="flex-1 py-4 rounded-xl hero-gradient font-bold tracking-wide hover:opacity-90 transition-opacity">
+                            ADD TO CART
+                        </button>
+                        <button onclick="toggleWishlist(${product.id}); closeQuickView()" class="w-14 h-14 rounded-xl glass border border-white/10 flex items-center justify-center hover:border-neon-pink transition-colors ${wishlist.has(product.id) ? 'text-neon-pink' : 'text-gray-400'}">
+                            <i class="fas fa-heart text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQuickView() {
+            document.getElementById('quick-view-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function selectSize(btn, size) {
+            btn.parentElement.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            btn.dataset.selected = size;
+        }
+
+        function getSelectedSize() {
+            const selected = document.querySelector('#qv-sizes .size-btn.selected');
+            return selected ? parseInt(selected.dataset.selected || selected.textContent) : null;
+        }
+
+        // UI Functions
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        }
+
+        function toggleSearch() {
+            const overlay = document.getElementById('search-overlay');
+            overlay.classList.toggle('hidden');
+            if (!overlay.classList.contains('hidden')) {
+                setTimeout(() => document.getElementById('search-input').focus(), 100);
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function handleSearch(query) {
+            const results = document.getElementById('search-results');
+            if (!query) {
+                results.innerHTML = '';
+                return;
+            }
+
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(query.toLowerCase()) ||
+                p.brand.toLowerCase().includes(query.toLowerCase())
+            );
+
+            results.innerHTML = filtered.map(p => `
+                <div class="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 cursor-pointer transition-colors" onclick="openQuickView(${p.id}); toggleSearch()">
+                    <img src="${p.image}" class="w-16 h-16 rounded-lg object-cover">
+                    <div>
+                        <h4 class="font-bold">${p.name}</h4>
+                        <p class="text-gray-500 text-sm">${p.brand} • $${p.price}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!', 'error');
+                return;
+            }
+            toggleCart();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function processCheckout() {
+            showToast('Order placed successfully! 🎉', 'success');
+            cart = [];
+            updateCart();
+            closeCheckout();
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            const colors = {
+                success: 'border-neon-lime text-neon-lime',
+                error: 'border-neon-pink text-neon-pink',
+                info: 'border-neon-cyan text-neon-cyan'
+            };
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+
+            toast.className = `toast glass border-l-4 ${colors[type]} p-4 rounded-xl flex items-center gap-3 min-w-[300px]`;
+            toast.innerHTML = `
+                <i class="fas ${icons[type]} text-xl"></i>
+                <span class="font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        function scrollToFeatured() {
+            document.getElementById('featured-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 3D Tilt Effect
+        document.addEventListener('mousemove', (e) => {
+            const card = document.getElementById('hero-sneaker');
+            if (!card) return;
+
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFeatured();
+            renderStreet();
+            renderPremium();
+
+            // Close modals on escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeQuickView();
+                    closeCheckout();
+                    toggleSearch();
+                    if (document.getElementById('cart-sidebar').classList.contains('open')) toggleCart();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
